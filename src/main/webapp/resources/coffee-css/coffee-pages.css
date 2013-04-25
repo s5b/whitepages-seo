@@ -154,6 +154,8 @@ div.locationContainer {
   overflow-y: scroll;
   display: block;
   float: left; }
+  div.locationContainer div.contact {
+    padding-top: 1em; }
 
 div.mapContainer {
   display: block;
