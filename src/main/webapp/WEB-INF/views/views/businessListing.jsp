@@ -77,22 +77,34 @@ ${requestScope.header}
                                     <c:set var="contact"  value="${association.contact}" />
                                     <li>
                                         <div class="contact">
-                                            <div class="primaryLabel">${association.contact.label}</div>
-                                            <div class="address">
-                                                <c:set var="address" value="${contact.address}" />
-                                                <p>${address.label}</p>
-                                                <p>${address.number} ${address.street}</p>
-                                                <p>${address.suburb} ${address.state} ${address.postcode}</p>
+                                            <div class="contactBase">
+                                                <div class="primaryLabel">${association.contact.label}</div>
+                                                <div class="address">
+                                                    <c:set var="address" value="${contact.address}" />
+                                                    <p>${address.label}</p>
+                                                    <p>${address.number} ${address.street}</p>
+                                                    <p>${address.suburb} ${address.state} ${address.postcode}</p>
+                                                </div>
+                                                <c:if test="${contact.address.mappable}">
+                                                    <a class="viewMap" href='<c:url value="/business-listing/${contentName}-${contentId}/contact/${contact.id}"/>'>View map</a>
+                                                </c:if>
                                             </div>
-                                            <c:if test="${contact.address.mappable}">
-                                                <a class="viewMap" href='<c:url value="/business-listing/${contentName}-${contentId}/contact/${contact.id}"/>'>View map</a>
-                                            </c:if>
+                                            <div class="contactComms">
+                                                <ul>
+                                                    <c:forEach var="telecom" items="${contact.telecoms}">
+                                                        <li>${telecom.number}</li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </li>
                                 </c:forEach>
                             </ul>
                         </section>
                     </c:forEach>
+                    <section class="hyc">
+                        <img src='<c:url value="/resources/images/hyc.png" />' alt="hyc"/>
+                    </section>
                 </c:when>
 
                 <c:when test='${tab.type == "findUs"}'>

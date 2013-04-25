@@ -133,6 +133,8 @@ nav.categories {
 
 section.contacts {
   float: left;
+  padding-top: 0;
+  padding-bottom: 1em;
 }
 
 a.locality {
@@ -145,10 +147,25 @@ a.locality {
 
 div.contact {
   padding: 1em;
+  padding-top: 0;
   &.selected {
     background-color: $colour3;
   }
   div.telecom > ul > li {
+    font-weight: bold;
+  }
+}
+
+div.contactBase {
+  float: left;
+  padding-top: 1em;
+  width: 235px;
+}
+
+div.contactComms {
+  float: left;
+  padding-top: 1em;
+  li {
     font-weight: bold;
   }
 }
@@ -161,6 +178,9 @@ h6 {
   padding-top: 0.5em;
 }
 
+section.hyc {
+  float: right;
+}
 
 
 div.locationContainer {

@@ -109,7 +109,9 @@ nav.categories {
     border-top: 1px solid #3f2f7f; }
 
 section.contacts {
-  float: left; }
+  float: left;
+  padding-top: 0;
+  padding-bottom: 1em; }
 
 a.locality {
   display: block;
@@ -119,10 +121,22 @@ a.locality {
   text-decoration: none; }
 
 div.contact {
-  padding: 1em; }
+  padding: 1em;
+  padding-top: 0; }
   div.contact.selected {
     background-color: #b7b7ff; }
   div.contact div.telecom > ul > li {
+    font-weight: bold; }
+
+div.contactBase {
+  float: left;
+  padding-top: 1em;
+  width: 235px; }
+
+div.contactComms {
+  float: left;
+  padding-top: 1em; }
+  div.contactComms li {
     font-weight: bold; }
 
 a.viewMap {
@@ -130,6 +144,9 @@ a.viewMap {
 
 h6 {
   padding-top: 0.5em; }
+
+section.hyc {
+  float: right; }
 
 div.locationContainer {
   width: 310px;
