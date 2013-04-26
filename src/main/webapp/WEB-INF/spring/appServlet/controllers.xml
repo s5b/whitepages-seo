@@ -20,7 +20,7 @@
 	<mvc:view-controller path="/" view-name="home"/>
 	<mvc:view-controller path="/alt" view-name="original-home"/>
 
-	<context:component-scan base-package="org.springframework.samples.mvc" />
+	<!--<context:component-scan base-package="org.springframework.samples.mvc" />-->
 	<context:component-scan base-package="au.com.sequation.sensis.web" />
 
 </beans>
