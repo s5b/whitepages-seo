@@ -4,7 +4,6 @@ apply plugin: 'war'
 apply plugin: 'idea'
 
 
-group = 'barry'
 version = '0.0.1'
 
 
@@ -37,10 +36,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
 
-}
-
-compileJava.doLast {
-    println "**************** At the end of the processing compileJava."
 }
 
 //war {

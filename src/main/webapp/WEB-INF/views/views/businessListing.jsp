@@ -146,7 +146,7 @@ ${requestScope.header}
 
 </article>
 <footer>
-    &copy; 2013 CoffeePages Pty Ltd <x:todaysdate/>
+    &copy; 2013 CoffeePages Pty Ltd <a href="https://github.com/s5b/whitepages-seo">(source)</a>
 </footer>
 
 <script src="<c:url value="/resources/coffee-js/lib/lodash.min.js" />"></script>
