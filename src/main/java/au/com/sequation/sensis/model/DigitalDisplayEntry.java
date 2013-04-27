@@ -3,7 +3,6 @@ package au.com.sequation.sensis.model;
 import au.com.sequation.sensis.model.tab.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 

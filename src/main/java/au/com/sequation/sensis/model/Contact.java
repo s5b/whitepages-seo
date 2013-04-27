@@ -21,7 +21,7 @@ public class Contact
         this.id = id;
         this.label = label;
         this.address = address;
-        this.telecoms = telecoms;
+        this.telecoms = ImmutableList.copyOf(telecoms);
     }
 
     public String getId()

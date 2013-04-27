@@ -7,53 +7,66 @@ package au.com.sequation.sensis.web;
  */
 public class Location
 {
-    private final String contentName;
-    private final String contentId;
-    private final String tabId;
-    private final String categoryId;
-    private final String suburb;
-    private final String state;
+    private final PrimaryId primaryId;
+    private final TabLocation tabLocation;
+    private final TabLocation defaultTabLocation;
+    private final String findUsTabId;
+    private final Region region;
     private final String contactId;
 
-    public Location(String contentName, String contentId, String tabId, String categoryId, String suburb, String state, String contactId)
+    public Location(PrimaryId primaryId, TabLocation tabLocation, TabLocation defaultTabLocation, String findUsTabId, Region region, String contactId)
     {
-        this.contentName = contentName;
-        this.contentId = contentId;
-        this.tabId = tabId;
-        this.categoryId = categoryId;
-        this.suburb = suburb;
-        this.state = state;
+        this.primaryId = primaryId;
+        this.tabLocation = tabLocation;
+        this.defaultTabLocation = defaultTabLocation;
+        this.findUsTabId = findUsTabId;
+        this.region = region;
         this.contactId = contactId;
     }
 
     public String getContentName()
     {
-        return contentName;
+        return primaryId.getContentName();
     }
 
     public String getContentId()
     {
-        return contentId;
+        return primaryId.getContentId();
     }
 
     public String getTabId()
     {
-        return tabId;
+        return tabLocation.getTabId();
     }
 
     public String getCategoryId()
     {
-        return categoryId;
+        return tabLocation.getCategoryId();
+    }
+
+    public String getDefaultTabId()
+    {
+        return defaultTabLocation.getTabId();
+    }
+
+    public String getDefaultCategoryId()
+    {
+        return defaultTabLocation.getCategoryId();
+    }
+
+    public String getFindUsTabId()
+    {
+        return findUsTabId;
     }
 
     public String getSuburb()
     {
-        return suburb;
+        return region.getSuburb();
     }
 
     public String getState()
     {
-        return state;
+        return region.getState();
     }
 
     public String getContactId()

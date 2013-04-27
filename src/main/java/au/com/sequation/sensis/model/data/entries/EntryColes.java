@@ -2,9 +2,6 @@ package au.com.sequation.sensis.model.data.entries;
 
 import au.com.sequation.sensis.model.*;
 import au.com.sequation.sensis.model.tab.*;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

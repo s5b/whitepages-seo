@@ -33,9 +33,11 @@ public class BusinessListingController
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
         TabLocation tabLocation = getDefaultTabCategory(dde);
-        model.addAttribute("location", new Location(contentName, contentId,
-                tabLocation.getTabId(), tabLocation.getCategoryId(),
-                LOCATION_NO_SUBURB, LOCATION_NO_STATE,
+        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+                tabLocation,
+                tabLocation,
+                resolveFindUsTab(dde, tabLocation).getTabId(),
+                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -47,10 +49,13 @@ public class BusinessListingController
                                @PathVariable String suburb, @PathVariable String state) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
-        TabLocation tabLocation = resolveFindUsTab(dde, getDefaultTabCategory(dde));
-        model.addAttribute("location", new Location(contentName, contentId,
-                tabLocation.getTabId(), tabLocation.getCategoryId(),
-                suburb, state,
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveFindUsTab(dde, defaultTabCategory);
+        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+                tabLocation,
+                defaultTabCategory,
+                tabLocation.getTabId(),
+                new Region(suburb, state),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -62,10 +67,13 @@ public class BusinessListingController
                                @PathVariable String tabId) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
-        TabLocation tabLocation = resolveTabCategory(dde, tabId, LOCATION_NO_CATEGORY, getDefaultTabCategory(dde));
-        model.addAttribute("location", new Location(contentName, contentId,
-                tabLocation.getTabId(), tabLocation.getCategoryId(),
-                LOCATION_NO_SUBURB, LOCATION_NO_STATE,
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveTabCategory(dde, tabId, LOCATION_NO_CATEGORY, defaultTabCategory);
+        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+                tabLocation,
+                defaultTabCategory,
+                resolveFindUsTab(dde, tabLocation).getTabId(),
+                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -77,10 +85,13 @@ public class BusinessListingController
                                @PathVariable String tabId, @PathVariable String categoryId) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
-        TabLocation tabLocation = resolveTabCategory(dde, tabId, categoryId, getDefaultTabCategory(dde));
-        model.addAttribute("location", new Location(contentName, contentId,
-                tabLocation.getTabId(), tabLocation.getCategoryId(),
-                LOCATION_NO_SUBURB, LOCATION_NO_STATE,
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveTabCategory(dde, tabId, categoryId, defaultTabCategory);
+        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+                tabLocation,
+                defaultTabCategory,
+                resolveFindUsTab(dde, tabLocation).getTabId(),
+                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -92,10 +103,13 @@ public class BusinessListingController
                                @PathVariable String contactId) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
-        TabLocation tabLocation = resolveFindUsTab(dde, getDefaultTabCategory(dde));
-        model.addAttribute("location", new Location(contentName, contentId,
-                tabLocation.getTabId(), tabLocation.getCategoryId(),
-                LOCATION_NO_SUBURB, LOCATION_NO_STATE,
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveFindUsTab(dde, defaultTabCategory);
+        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+                tabLocation,
+                defaultTabCategory,
+                resolveFindUsTab(dde, tabLocation).getTabId(),
+                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 contactId));
 
         return render(dde, model);
