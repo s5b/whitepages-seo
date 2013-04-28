@@ -55,6 +55,7 @@ article {
   -webkit-box-shadow: 0px 0px 14px 0px $colour5; /* Android 2.3+, iOS 4.0.2-4.2, Safari 3-4 */
   box-shadow: 0 0 14px 0 $colour5; /* Chrome 6+, Firefox 4+, IE 9+, iOS 5+, Opera 10.50+ */
   min-height: 12em;
+  *height: auto !important;
   overflow: auto;
   color: $colour2;
   background-color: $colour4;
@@ -96,6 +97,7 @@ section.main {
   margin: 4em 1em 1em 1em;
   background-color: white;
   min-height: 12em;
+  *height: auto !important;
   overflow: auto;
 }
 
@@ -148,6 +150,7 @@ a.locality {
 a.region {
   display: block;
   margin: 0.25em;
+  margin-bottom: 0;
   padding: 0.5em;
   border: 1px solid $colour1;
   background-color: $colour4;
@@ -160,6 +163,7 @@ a.region {
 div.contact {
   padding: 1em;
   padding-top: 0;
+  width: 350px;
   &.selected {
     background-color: $colour3;
   }

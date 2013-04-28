@@ -47,6 +47,7 @@ article {
   box-shadow: 0 0 14px 0 #bbaaff;
   /* Chrome 6+, Firefox 4+, IE 9+, iOS 5+, Opera 10.50+ */
   min-height: 12em;
+  *height: auto !important;
   overflow: auto;
   color: #5d5575;
   background-color: #f4f2ff;
@@ -82,6 +83,7 @@ section.main {
   margin: 4em 1em 1em 1em;
   background-color: white;
   min-height: 12em;
+  *height: auto !important;
   overflow: auto; }
 
 /* *** Categories */
@@ -123,6 +125,7 @@ a.locality {
 a.region {
   display: block;
   margin: 0.25em;
+  margin-bottom: 0;
   padding: 0.5em;
   border: 1px solid #3f2f7f;
   background-color: #f4f2ff;
@@ -132,7 +135,8 @@ a.region {
 
 div.contact {
   padding: 1em;
-  padding-top: 0; }
+  padding-top: 0;
+  width: 350px; }
   div.contact.selected {
     background-color: #b7b7ff; }
   div.contact div.telecom > ul > li {
