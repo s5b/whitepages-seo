@@ -24,7 +24,7 @@ public class BusinessListingControllerTest
     Model model = mock(Model.class);
 
     @Test
-    public void testDefaultLocationForJetStar() {
+    public void defaultLocationForJetStar() {
         BusinessListingController blc = new BusinessListingController();
         ArgumentCaptor<Location> locationCapture = ArgumentCaptor.forClass(Location.class);
 
@@ -45,7 +45,7 @@ public class BusinessListingControllerTest
     }
 
     @Test
-    public void testGoingForALocationWithNoFindUsTabForJetStar() {
+    public void allocationWithNoFindUsTabForJetStar() {
         BusinessListingController blc = new BusinessListingController();
         ArgumentCaptor<Location> locationCapture = ArgumentCaptor.forClass(Location.class);
 
@@ -59,8 +59,8 @@ public class BusinessListingControllerTest
         assertThat(location.getContentName(), equalTo("contentName"));
         assertThat(location.getContentId(), equalTo("456"));
         assertThat(location.getContactId(), equalTo(""));
-        assertThat(location.getTabId(), equalTo("101"));
-        assertThat(location.getCategoryId(), equalTo("100002"));
+        assertThat(location.getTabId(), equalTo("none"));
+        assertThat(location.getCategoryId(), equalTo(""));
         assertThat(location.getSuburb(), equalTo("suburb"));
         assertThat(location.getState(), equalTo("state"));
     }

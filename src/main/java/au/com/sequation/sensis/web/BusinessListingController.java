@@ -2,7 +2,6 @@ package au.com.sequation.sensis.web;
 
 import au.com.sequation.sensis.model.DigitalDisplayEntry;
 import au.com.sequation.sensis.model.data.AllDigitalDisplays;
-import au.com.sequation.sensis.model.tab.Category;
 import au.com.sequation.sensis.model.tab.ContactTab;
 import au.com.sequation.sensis.model.tab.FindUsTab;
 import au.com.sequation.sensis.model.tab.Tab;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
+/* This controller uses hash URLs to determine what should be shown. */
 
 @Controller
 @RequestMapping("/business-listing/*")
@@ -56,66 +55,12 @@ public class BusinessListingController
         model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
                 tabLocation,
                 defaultTabCategory,
-                tabLocation.getTabId(),
-                new Region(suburb, state, 19),
+                resolveFindUsTab(dde, tabLocation).getTabId(),
+                new Region(suburb, state, 17),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
 	}
-
-	@RequestMapping(value="{contentName}-{contentId}/tab/{tabId}", method=RequestMethod.GET)
-	public String tabView(Model model,
-                               @PathVariable String contentName, @PathVariable String contentId,
-                               @PathVariable String tabId) {
-        DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
-
-        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
-        TabLocation tabLocation = resolveTabCategory(dde, tabId, LOCATION_NO_CATEGORY, defaultTabCategory);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
-                tabLocation,
-                defaultTabCategory,
-                resolveFindUsTab(dde, tabLocation).getTabId(),
-                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
-                LOCATION_NO_CONTACT_ID));
-
-        return render(dde, model);
-    }
-
-	@RequestMapping(value="{contentName}-{contentId}/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
-	public String tabCategoryView(Model model,
-                               @PathVariable String contentName, @PathVariable String contentId,
-                               @PathVariable String tabId, @PathVariable String categoryId) {
-        DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
-
-        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
-        TabLocation tabLocation = resolveTabCategory(dde, tabId, categoryId, defaultTabCategory);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
-                tabLocation,
-                defaultTabCategory,
-                resolveFindUsTab(dde, tabLocation).getTabId(),
-                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
-                LOCATION_NO_CONTACT_ID));
-
-        return render(dde, model);
-    }
-
-	@RequestMapping(value="{contentName}-{contentId}/contact/{contactId}", method=RequestMethod.GET)
-	public String tabContactMapView(Model model,
-                               @PathVariable String contentName, @PathVariable String contentId,
-                               @PathVariable String contactId) {
-        DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
-
-        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
-        TabLocation tabLocation = resolveFindUsTab(dde, defaultTabCategory);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
-                tabLocation,
-                defaultTabCategory,
-                resolveFindUsTab(dde, tabLocation).getTabId(),
-                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
-                contactId));
-
-        return render(dde, model);
-    }
 
     /* *** private *** */
 
@@ -128,50 +73,12 @@ public class BusinessListingController
                 return FindUsTab.class.isAssignableFrom(tab.getClass());
             }
         }).orNull();
-        return tab != null ? new TabLocation(tab.getId(), LOCATION_NO_CATEGORY) : defaultTabLocation;
+        return new TabLocation(tab != null ? tab.getId() : "none", LOCATION_NO_CATEGORY);
     }
 
     private TabLocation getDefaultTabCategory(DigitalDisplayEntry dde) {
         ContactTab firstTab = (ContactTab) dde.getTabs().get(0);
         return new TabLocation(firstTab.getId(), firstTab.getCategories().get(0).getId());
-    }
-
-    private Tab findTabById(List<Tab> tabs, final String tabId) {
-        return FluentIterable.from(tabs).firstMatch(new Predicate<Tab>()
-        {
-            @Override
-            public boolean apply(Tab tab)
-            {
-                return tab.getId().equals(tabId);
-            }
-        }).orNull();
-    }
-
-    private Category findCategoryById(List<Category> categories, final String categoryId) {
-        return FluentIterable.from(categories).firstMatch(new Predicate<Category>()
-        {
-            @Override
-            public boolean apply(Category category)
-            {
-                return category.getId().equals(categoryId);
-            }
-        }).orNull();
-    }
-
-    private TabLocation resolveTabCategory(DigitalDisplayEntry dde,
-                                           String tabId, String categoryId,
-                                           TabLocation defaultTabLocation) {
-        Tab tab = findTabById(dde.getTabs(), tabId);
-        if (tab != null) {
-            if (FindUsTab.class.isAssignableFrom(tab.getClass())) {
-                return new TabLocation(tab.getId(), LOCATION_NO_CATEGORY);
-            }
-            if (ContactTab.class.isAssignableFrom(tab.getClass())) {
-                Category category = findCategoryById(tab.getCategories(), categoryId);
-                return new TabLocation(tab.getId(), category != null ? category.getId() : tab.getCategories().get(0).getId());
-            }
-        }
-        return defaultTabLocation;
     }
 
     private String render(DigitalDisplayEntry dde, Model model) {
