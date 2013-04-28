@@ -53,8 +53,8 @@
                 <c:set var="tabSeparator" value="," />
             </c:forEach>
         };
-        s5b.location.suburb      = '${location.suburb}';
-        s5b.location.state       = '${location.state}';
+        s5b.location.suburb = '${location.suburb}';
+        s5b.location.state  = '${location.state}';
     </script>
 
     <title>${dde.name} : Business Listing View</title>
@@ -82,37 +82,14 @@
                     </nav>
                     <c:forEach var="category" items="${tab.categories}">
                         <section class="contacts" data-ng-show="isCategorySelected('${category.id}')">
-                            <c:if test="${location.primaryId.regioned}">
-                                <a class="region" href='<c:url value="${location.primaryId}#" />'>View locations found in <span>${location.region}</span> &gt;</a>
-                            </c:if>
-                            <ul>
-                                <c:forEach var="association" items="${category.associations}">
-                                    <c:set var="contact"  value="${association.contact}" />
-                                    <li>
-                                        <div class="contact">
-                                            <div class="contactBase">
-                                                <div class="primaryLabel">${association.contact.label}</div>
-                                                <div class="address">
-                                                    <c:set var="address" value="${contact.address}" />
-                                                    <p>${address.label}</p>
-                                                    <p>${address.number} ${address.street}</p>
-                                                    <p>${address.suburb} ${address.state} ${address.postcode}</p>
-                                                </div>
-                                                <c:if test="${contact.address.mappable}">
-                                                    <a class="viewMap" href='<c:url value="${location.primaryId}#/contact/${contact.id}"/>'>View map</a>
-                                                </c:if>
-                                            </div>
-                                            <div class="contactComms">
-                                                <ul>
-                                                    <c:forEach var="telecom" items="${contact.telecoms}">
-                                                        <li>${telecom.number}</li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                            <c:choose>
+                                <c:when test="${location.defaultTabId == tab.id && location.defaultCategoryId == category.id}">
+                                    <s5b:category category="${category}" location="${location}" />
+                                </c:when>
+                                <c:otherwise>
+                                    <div data-s5b-content-replacement='<c:url value="${location.primaryId}/fragment/tab/${tab.id}/category/${category.id}" />'></div>
+                                </c:otherwise>
+                            </c:choose>
                         </section>
                     </c:forEach>
                     <section class="hyc">
@@ -121,33 +98,8 @@
                 </c:when>
 
                 <c:when test='${tab.type == "findUs"}'>
-                    <div class="locationContainer">
-                        <ul>
-                            <c:set var="currentLocality" value="xxx-NO-MATCH-xxx" scope="request"/>
-                            <c:forEach var="association" items="${tab.associations}">
-                                <c:set var="contact"  value="${association.contact}" />
-                                <c:set var="thisLocality" value="${contact.address.suburb}, ${contact.address.state}" />
-                                <s5b:localityHeading prefix="business-listing-hash" currentLocality="${currentLocality}" thisLocality="${thisLocality}" thisSuburb="${contact.address.suburb}" thisState="${contact.address.state}" />
-                                <c:set var="currentLocality" value="${thisLocality}" scope="request"/>
-                                <li>
-                                    <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')">
-                                        <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /> </c:if>${contact.label}</div>
-                                        <div class="address">
-                                            <c:set var="address" value="${contact.address}" />
-                                            <p>${address.number} ${address.street}</p>
-                                            <p>${address.suburb} ${address.state} ${address.postcode}</p>
-                                        </div>
-                                        <div class="telecom">
-                                            <ul>
-                                                <c:forEach var="telecom" items="${contact.telecoms}">
-                                                    <li>${telecom.number}</li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
+                    <div class="locationContainer" data-s5b-content-replacement='<c:url value="${location.primaryId}/fragment/findUs" />'>
+                        <s5b:findUs tab="${tab}" />
                     </div><div class="mapContainer"><img alt="map" src="<c:url value="/resources/images/mordor.png" />" /></div>
                 </c:when>
 

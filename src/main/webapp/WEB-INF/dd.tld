@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        version="2.0">
+    <tlib-version>1.0</tlib-version>
+    <short-name>DigitalDisplayTagLib</short-name>
+    <uri>/DigitalDisplayTagLibrary</uri>
+
+    <function>
+        <name>getFilteredAssociations</name>
+        <function-class>au.com.sequation.sensis.web.tags.FilterAssociations</function-class>
+        <function-signature>java.util.List getFilteredAssociations(java.util.List,au.com.sequation.sensis.web.Region)</function-signature>
+    </function>
+</taglib>

@@ -2,9 +2,11 @@ package au.com.sequation.sensis.web;
 
 import au.com.sequation.sensis.model.DigitalDisplayEntry;
 import au.com.sequation.sensis.model.data.AllDigitalDisplays;
+import au.com.sequation.sensis.model.tab.Category;
 import au.com.sequation.sensis.model.tab.ContactTab;
 import au.com.sequation.sensis.model.tab.FindUsTab;
 import au.com.sequation.sensis.model.tab.Tab;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import org.springframework.stereotype.Controller;
@@ -37,7 +39,7 @@ public class BusinessListingController
         model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 tabLocation,
                 tabLocation,
-                resolveFindUsTab(dde, tabLocation).getTabId(),
+                resolveFindUsTabLocation(dde).getTabId(),
                 new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
                 LOCATION_NO_CONTACT_ID));
 
@@ -51,21 +53,95 @@ public class BusinessListingController
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
         TabLocation defaultTabCategory = getDefaultTabCategory(dde);
-        TabLocation tabLocation = resolveFindUsTab(dde, defaultTabCategory);
+        TabLocation tabLocation = resolveFindUsTabLocation(dde);
         model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
                 tabLocation,
                 defaultTabCategory,
-                resolveFindUsTab(dde, tabLocation).getTabId(),
+                tabLocation.getTabId(),
                 new Region(suburb, state, 17),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
 	}
 
+	@RequestMapping(value="{contentName}-{contentId}/fragment/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
+	public String fragmentTabCategoryView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String tabId, @PathVariable String categoryId) {
+        return fragmentCategory(model, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE, tabId, categoryId);
+	}
+
+	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}/fragment/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
+	public String fragmentRegionTabCategoryView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String suburb, @PathVariable String state,
+                               @PathVariable String tabId, @PathVariable String categoryId) {
+        return fragmentCategory(model, contentName, contentId, suburb, state, tabId, categoryId);
+	}
+
+	@RequestMapping(value="{contentName}-{contentId}/fragment/findUs", method=RequestMethod.GET)
+	public String fragmentFindUsView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId) {
+        return fragmentFindUs(model, contentId);
+	}
+
+	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}/fragment/findUs", method=RequestMethod.GET)
+	public String fragmentRegionFindUsView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String suburb, @PathVariable String state) {
+        return fragmentFindUs(model, contentId);
+	}
+
     /* *** private *** */
 
-    private TabLocation resolveFindUsTab(DigitalDisplayEntry dde, TabLocation defaultTabLocation) {
-        Tab tab = FluentIterable.from(dde.getTabs()).firstMatch(new Predicate<Tab>()
+    private String fragmentFindUs(Model model, String contentId) {
+        model.addAttribute("tab", resolveFindUsTab(ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId)));
+        return "views/fragmentFindUs";
+    }
+
+    private String fragmentCategory(Model model, String contentName, String contentId, String suburb, String state, String tabId, String categoryId) {
+        DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
+
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveFindUsTabLocation(dde);
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
+                tabLocation,
+                defaultTabCategory,
+                resolveFindUsTabLocation(dde).getTabId(),
+                new Region(suburb, state, 11),
+                LOCATION_NO_CONTACT_ID));
+        model.addAttribute("category", resolveCategory(dde, tabId, categoryId));
+        return "views/fragmentCategory";
+
+    }
+
+    private Category resolveCategory(DigitalDisplayEntry dde, final String tabId, final String categoryId) {
+        return FluentIterable.from(dde.getTabs()).firstMatch(new Predicate<Tab>()
+        {
+            @Override
+            public boolean apply(Tab tab)
+            {
+                return tab.getId().equals(tabId);
+            }
+        }).transform(new Function<Tab, Category>()
+        {
+            @Override
+            public Category apply(Tab tab)
+            {
+                return FluentIterable.from(tab.getCategories()).firstMatch(new Predicate<Category>()
+                {
+                    @Override
+                    public boolean apply(Category category)
+                    {
+                        return category.getId().equals(categoryId);
+                    }
+                }).orNull();
+            }
+        }).orNull();
+    }
+
+    private Tab resolveFindUsTab(DigitalDisplayEntry dde) {
+        return FluentIterable.from(dde.getTabs()).firstMatch(new Predicate<Tab>()
         {
             @Override
             public boolean apply(Tab tab)
@@ -73,6 +149,10 @@ public class BusinessListingController
                 return FindUsTab.class.isAssignableFrom(tab.getClass());
             }
         }).orNull();
+    }
+
+    private TabLocation resolveFindUsTabLocation(DigitalDisplayEntry dde) {
+        Tab tab = resolveFindUsTab(dde);
         return new TabLocation(tab != null ? tab.getId() : "none", LOCATION_NO_CATEGORY);
     }
 
