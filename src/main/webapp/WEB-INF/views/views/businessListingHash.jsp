@@ -85,7 +85,7 @@
                     <c:forEach var="category" items="${tab.categories}">
                         <section class="contacts" ng-show="isCategorySelected('${category.id}')">
                             <c:if test="${location.primaryId.regioned}">
-                                <a class="region" href='<c:url value="${location.primaryId}#/suburb/${location.suburb}/state/${location.state}" />'>View locations found in <span>${location.region}</span> &gt;</a>
+                                <a class="region" href='<c:url value="${location.primaryId}#" />'>View locations found in <span>${location.region}</span> &gt;</a>
                             </c:if>
                             <ul>
                                 <c:forEach var="association" items="${category.associations}">

@@ -5,8 +5,6 @@ s5b.utility = {
         var pathComponents = {
             '/tab/(\\d+)':        'tabId',
             '/category/(\\d+)':   'categoryId',
-            '/suburb/([^/]+)':    'suburb',
-            '/state/([^/]+)':     'state',
             '/contact/([^/]+)': 'contactId'
         };
         s5b.location.contactId = '';
@@ -59,9 +57,3 @@ s5b.controllers.main = ['$scope', '$location', function ($scope, $location) {
         s5b.location.tabId = tabId;
     };
 }];
-
-//if (s5b.location.contactId) {
-//    document.getElementById('contact_' + s5b.location.contactId).scrollIntoView(true);
-//} else if (s5b.location.suburb && s5b.location.state) {
-//    document.getElementById('locality_' + s5b.location.suburb + '_' + s5b.location.state).scrollIntoView(true);
-//}
