@@ -145,6 +145,18 @@ a.locality {
   text-decoration: none;
 }
 
+a.region {
+  display: block;
+  margin: 0.25em;
+  padding: 0.5em;
+  border: 1px solid $colour1;
+  background-color: $colour4;
+  text-decoration: none;
+  span {
+    font-weight: bold;
+  }
+}
+
 div.contact {
   padding: 1em;
   padding-top: 0;

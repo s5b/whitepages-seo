@@ -19,6 +19,8 @@ public class BusinessListingHashController
 {
     private static final AllDigitalDisplays ALL_DIGITAL_DISPLAY_ENTRIES = AllDigitalDisplays.allDigitalDisplays();
 
+    private static final String BASE_URL_PREFIX = "/business-listing-hash/";
+
     private static final String LOCATION_NO_CATEGORY = "";
     private static final String LOCATION_NO_SUBURB = "";
     private static final String LOCATION_NO_STATE = "";
@@ -30,11 +32,11 @@ public class BusinessListingHashController
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
         TabLocation tabLocation = getDefaultTabCategory(dde);
-        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
                 tabLocation,
                 tabLocation,
                 resolveFindUsTab(dde, tabLocation).getTabId(),
-                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE),
+                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -48,11 +50,11 @@ public class BusinessListingHashController
 
         TabLocation defaultTabCategory = getDefaultTabCategory(dde);
         TabLocation tabLocation = resolveFindUsTab(dde, defaultTabCategory);
-        model.addAttribute("location", new Location(new PrimaryId(contentName, contentId),
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
                 tabLocation,
                 defaultTabCategory,
                 resolveFindUsTab(dde, tabLocation).getTabId(),
-                new Region(suburb, state),
+                new Region(suburb, state, 17),
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);

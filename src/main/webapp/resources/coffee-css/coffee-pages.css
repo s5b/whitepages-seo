@@ -120,6 +120,16 @@ a.locality {
   padding: 0.2em 0 0.2em 0.5em;
   text-decoration: none; }
 
+a.region {
+  display: block;
+  margin: 0.25em;
+  padding: 0.5em;
+  border: 1px solid #3f2f7f;
+  background-color: #f4f2ff;
+  text-decoration: none; }
+  a.region span {
+    font-weight: bold; }
+
 div.contact {
   padding: 1em;
   padding-top: 0; }

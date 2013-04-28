@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="s5b" %>
 <%@ page session="false" %>
 <!doctype html>
@@ -54,11 +55,8 @@
                 <c:set var="tabSeparator" value="," />
             </c:forEach>
         };
-        <%--s5b.location.tabId       = '${location.tabId}';--%>
-        <%--s5b.location.categoryId  = '${location.categoryId}';--%>
         s5b.location.suburb      = '${location.suburb}';
         s5b.location.state       = '${location.state}';
-        <%--s5b.location.contactId   = '${location.contactId}';--%>
     </script>
 
     <title>${dde.name} : Business Listing View</title>
@@ -73,7 +71,7 @@
 </header>
 <article>
     <nav class="main">
-        <ul><c:forEach var="tab" items="${dde.tabs}"><li><a href='<c:url value="/business-listing-hash/${contentName}-${contentId}/#/tab/${tab.id}"/>' ng-class="isTabSelected('${tab.id}')">${tab.name}</a></li></c:forEach></ul>
+        <ul><c:forEach var="tab" items="${dde.tabs}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}"/>' ng-class="isTabSelected('${tab.id}')">${tab.name}</a></li></c:forEach></ul>
     </nav>
 
     <c:forEach var="tab" items="${dde.tabs}">
@@ -82,10 +80,13 @@
 
                 <c:when test='${tab.type == "contact"}'>
                     <nav class="categories">
-                        <ul><c:forEach var="category" items="${tab.categories}"><li><a href='<c:url value="/business-listing-hash/${contentName}-${contentId}/#/tab/${tab.id}/category/${category.id}"/>' ng-class="isCategorySelected('${category.id}')">${category.name}</a></li></c:forEach></ul>
+                        <ul><c:forEach var="category" items="${tab.categories}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}/category/${category.id}"/>' ng-class="isCategorySelected('${category.id}')">${category.name}</a></li></c:forEach></ul>
                     </nav>
                     <c:forEach var="category" items="${tab.categories}">
                         <section class="contacts" ng-show="isCategorySelected('${category.id}')">
+                            <c:if test="${location.primaryId.regioned}">
+                                <a class="region" href='<c:url value="${location.primaryId}#/suburb/${location.suburb}/state/${location.state}" />'>View locations found in <span>${location.region}</span> &gt;</a>
+                            </c:if>
                             <ul>
                                 <c:forEach var="association" items="${category.associations}">
                                     <c:set var="contact"  value="${association.contact}" />
@@ -100,7 +101,7 @@
                                                     <p>${address.suburb} ${address.state} ${address.postcode}</p>
                                                 </div>
                                                 <c:if test="${contact.address.mappable}">
-                                                    <a class="viewMap" href='<c:url value="/business-listing-hash/${contentName}-${contentId}/#/contact/${contact.id}"/>'>View map</a>
+                                                    <a class="viewMap" href='<c:url value="${location.primaryId}#/contact/${contact.id}"/>'>View map</a>
                                                 </c:if>
                                             </div>
                                             <div class="contactComms">
@@ -124,7 +125,7 @@
                 <c:when test='${tab.type == "findUs"}'>
                     <div class="locationContainer">
                         <ul>
-                            <c:set var="currentLocality" value="xxx" scope="request"/>
+                            <c:set var="currentLocality" value="xxx-NO-MATCH-xxx" scope="request"/>
                             <c:forEach var="association" items="${tab.associations}">
                                 <c:set var="contact"  value="${association.contact}" />
                                 <c:set var="thisLocality" value="${contact.address.suburb}, ${contact.address.state}" />

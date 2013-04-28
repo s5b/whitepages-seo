@@ -73,4 +73,14 @@ public class Location
     {
         return contactId;
     }
+
+    public PrimaryId getPrimaryId()
+    {
+        return primaryId;
+    }
+
+    public Region getRegion()
+    {
+        return region;
+    }
 }
