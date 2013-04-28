@@ -71,7 +71,7 @@ public class BusinessListingHashController
                 return FindUsTab.class.isAssignableFrom(tab.getClass());
             }
         }).orNull();
-        return tab != null ? new TabLocation(tab.getId(), LOCATION_NO_CATEGORY) : defaultTabLocation;
+        return new TabLocation(tab != null ? tab.getId() : "none", LOCATION_NO_CATEGORY);
     }
 
     private TabLocation getDefaultTabCategory(DigitalDisplayEntry dde) {

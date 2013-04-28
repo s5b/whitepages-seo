@@ -24,7 +24,7 @@ s5b.utility = {
             s5b.location.tabId = s5b.location.findUsTabId;
             // Use setTimeout with a zero interval to force delayed execution until after all other processing.
             setTimeout(function () { document.getElementById('contact_' + s5b.location.contactId).scrollIntoView(true); }, 0);
-        } else if (s5b.location.tabId === '' && s5b.location.categoryId === '' && s5b.location.suburb && s5b.location.state) {
+        } else if (s5b.location.tabId === '' && s5b.location.categoryId === '' && s5b.location.suburb && s5b.location.state && s5b.location.findUsTabId != 'none') {
             // Have a suburb and state but no tab or category - find us for locality.
             s5b.location.tabId = s5b.location.findUsTabId;
             // Use setTimeout with a zero interval to force delayed execution until after all other processing.
