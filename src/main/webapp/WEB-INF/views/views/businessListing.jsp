@@ -133,7 +133,7 @@
                                 <c:set var="currentLocality" value="${thisLocality}" scope="request"/>
                                 <li>
                                     <div id="contact_${contact.id}" class="contact" ng-class="isContactSelected('${contact.id}')">
-                                        <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /></c:if>${contact.label}</div>
+                                        <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /> </c:if>${contact.label}</div>
                                         <div class="address">
                                             <c:set var="address" value="${contact.address}" />
                                             <p>${address.number} ${address.street}</p>
@@ -150,7 +150,7 @@
                                 </li>
                             </c:forEach>
                         </ul>
-                    </div><div class="mapContainer"><img src="<c:url value="/resources/images/30th-map.jpg" />" class=""></div>
+                    </div><div class="mapContainer"><img src="<c:url value="/resources/images/mordor.png" />" class=""></div>
                 </c:when>
 
                 <c:otherwise>HUH? Tab type "${tab.type}" is unknown.</c:otherwise>
@@ -166,7 +166,7 @@
 
 <script src="<c:url value="/resources/coffee-js/lib/lodash.min.js" />"></script>
 <script src="<c:url value="/resources/coffee-js/lib/angular.min.js" />"></script>
-<script src="<c:url value="/resources/coffee-js/application-hash.js" />"></script>
+<script src="<c:url value="/resources/coffee-js/application.js" />"></script>
 
 </body>
 
