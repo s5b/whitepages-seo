@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="s5b" %>
+<%@ taglib uri="/WEB-INF/dd.tld" prefix="s5bdd" %>
 <%@ page session="false" %>
 <!doctype html>
 <html lang="en" class="ng-app:application" id="ng-app" data-ng-app="application">
@@ -99,7 +100,8 @@
 
                 <c:when test='${tab.type == "findUs"}'>
                     <div class="locationContainer" data-s5b-content-replacement='<c:url value="${location.primaryId}/fragment/findUs" />'>
-                        <s5b:findUs tab="${tab}" />
+                    <%--<div class="locationContainer" >--%>
+                        <s5b:findUs associations="${s5bdd:getFilteredAssociations(tab.associations, location.region)}" />
                     </div><div class="mapContainer"><img alt="map" src="<c:url value="/resources/images/mordor.png" />" /></div>
                 </c:when>
 

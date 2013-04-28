@@ -6,5 +6,5 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="s5b" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="locationContainer">
-    <s5b:findUs tab="${tab}" />
+    <s5b:findUs associations="${tab.associations}" />
 </div>
