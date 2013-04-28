@@ -9,5 +9,5 @@
 <c:if test="${!fn:containsIgnoreCase(currentLocality, thisLocality)}">
     <c:set var="paramSuburb" value='${fn:toLowerCase(fn:replace(thisSuburb, " ", "-"))}' />
     <c:set var="paramState" value='${fn:toLowerCase(thisState)}' />
-    <a id='locality_${paramSuburb}_${paramState}' class="locality" href='<c:url value="/${prefix}/${contentName}-${contentId}/${paramSuburb}-${paramState}"/>'>${thisLocality}</a>
+    <li><a id='locality_${paramSuburb}_${paramState}' class="locality" href='<c:url value="/${prefix}/${contentName}-${contentId}/${paramSuburb}-${paramState}"/>'>${thisLocality}</a></li>
 </c:if>

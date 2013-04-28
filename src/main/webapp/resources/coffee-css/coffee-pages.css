@@ -145,10 +145,11 @@ div.contact {
 div.contactBase {
   float: left;
   padding-top: 1em;
-  width: 235px; }
+  width: 228px; }
 
 div.contactComms {
   float: left;
+  width: 120px;
   padding-top: 1em; }
   div.contactComms li {
     font-weight: bold; }

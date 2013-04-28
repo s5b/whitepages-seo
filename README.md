@@ -26,9 +26,12 @@ Then, in your browser, there are two predefined entities, coles and jetstar:
 Things To Do:
 -------------
 
-* Test in Internet Explorer 7.
 * Implement the count for the location preview.
-* Change the markup to be compliant with the html5 specification - change the angularjs attributes to be prefixed with "data-", for a start.
 * Provide asynchronous loading of all but the default tab/category and the default content of the "Find Us" tab
+
+Continuous tasks (have been done but need to be redone continually):
+
+* Test in Internet Explorer 7.
+* Check that the markup is valid.
 
 

@@ -3,15 +3,13 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="s5b" %>
 <%@ page session="false" %>
 <!doctype html>
-<html lang="en" class="ng-app:application" id="ng-app" ng-app="application" xmlns:ng="http://angularjs.org">
+<html lang="en" class="ng-app:application" id="ng-app" data-ng-app="application">
 
 <head>
 
     <meta charset="utf-8">
 
     <meta name="application-name" content="CoffeePages"/>
-
-    <meta http-equiv="imagetoolbar" content="false" />
 
     <link rel="stylesheet" href="<c:url value="/resources/coffee-css/coffee-pages.css" />" type="text/css" />
 
@@ -64,26 +62,26 @@
 
 </head>
 
-<body ng-controller="s5b.controllers.main">
+<body data-ng-controller="s5b.controllers.main">
 
-<header>
+<header data-ng-cloak class="ng-cloak">
     <h1>${dde.name} : Business Listing</h1>
 </header>
-<article>
+<article data-ng-cloak class="ng-cloak">
     <nav class="main">
-        <ul><c:forEach var="tab" items="${dde.tabs}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}"/>' ng-class="isTabSelected('${tab.id}')">${tab.name}</a></li></c:forEach></ul>
+        <ul><c:forEach var="tab" items="${dde.tabs}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}"/>' data-ng-class="isTabSelected('${tab.id}')">${tab.name}</a></li></c:forEach></ul>
     </nav>
 
     <c:forEach var="tab" items="${dde.tabs}">
-        <section class="main" ng-show="isTabSelected('${tab.id}')">
+        <section class="main" data-ng-show="isTabSelected('${tab.id}')">
             <c:choose>
 
                 <c:when test='${tab.type == "contact"}'>
                     <nav class="categories">
-                        <ul><c:forEach var="category" items="${tab.categories}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}/category/${category.id}"/>' ng-class="isCategorySelected('${category.id}')">${category.name}</a></li></c:forEach></ul>
+                        <ul><c:forEach var="category" items="${tab.categories}"><li><a href='<c:url value="${location.primaryId}#/tab/${tab.id}/category/${category.id}"/>' data-ng-class="isCategorySelected('${category.id}')">${category.name}</a></li></c:forEach></ul>
                     </nav>
                     <c:forEach var="category" items="${tab.categories}">
-                        <section class="contacts" ng-show="isCategorySelected('${category.id}')">
+                        <section class="contacts" data-ng-show="isCategorySelected('${category.id}')">
                             <c:if test="${location.primaryId.regioned}">
                                 <a class="region" href='<c:url value="${location.primaryId}#" />'>View locations found in <span>${location.region}</span> &gt;</a>
                             </c:if>
@@ -132,7 +130,7 @@
                                 <s5b:localityHeading prefix="business-listing-hash" currentLocality="${currentLocality}" thisLocality="${thisLocality}" thisSuburb="${contact.address.suburb}" thisState="${contact.address.state}" />
                                 <c:set var="currentLocality" value="${thisLocality}" scope="request"/>
                                 <li>
-                                    <div id="contact_${contact.id}" class="contact" ng-class="isContactSelected('${contact.id}')">
+                                    <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')">
                                         <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /> </c:if>${contact.label}</div>
                                         <div class="address">
                                             <c:set var="address" value="${contact.address}" />
@@ -150,7 +148,7 @@
                                 </li>
                             </c:forEach>
                         </ul>
-                    </div><div class="mapContainer"><img src="<c:url value="/resources/images/mordor.png" />" class=""></div>
+                    </div><div class="mapContainer"><img alt="map" src="<c:url value="/resources/images/mordor.png" />" /></div>
                 </c:when>
 
                 <c:otherwise>HUH? Tab type "${tab.type}" is unknown.</c:otherwise>
@@ -160,7 +158,7 @@
     </c:forEach>
 
 </article>
-<footer>
+<footer data-ng-cloak class="ng-cloak">
     &copy; 2013 CoffeePages Pty Ltd <a href="https://github.com/s5b/whitepages-seo">(source)</a>
 </footer>
 
