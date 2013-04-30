@@ -1,8 +1,11 @@
 package au.com.sequation.sensis.model.data;
 
 import au.com.sequation.sensis.model.DigitalDisplayEntry;
+import au.com.sequation.sensis.model.data.entries.ContentIdentifier;
 import au.com.sequation.sensis.model.data.entries.EntryColes;
 import au.com.sequation.sensis.model.data.entries.EntryJetstar;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -35,5 +38,17 @@ public class AllDigitalDisplays
 
     public DigitalDisplayEntry byContentId(String contentId) {
         return allDigitalDisplays.get(contentId);
+    }
+
+    public List<ContentIdentifier> allContentIdentifiers()
+    {
+        return FluentIterable.from(INCLUDED_DIGITAL_DISPLAY_ENTRIES).
+                transform(new Function<DigitalDisplayEntry, ContentIdentifier>() {
+                    @Override
+                    public ContentIdentifier apply(DigitalDisplayEntry dde)
+                    {
+                        return new ContentIdentifier(dde.getName(), dde.getContentId());
+                    }
+                }).toList();
     }
 }

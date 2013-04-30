@@ -11,8 +11,8 @@ s5b.utility = {
     },
     parsePath: function (locationPath) {
         var pathComponents = {
-            '/tab/(\\d+)':        'tabId',
-            '/category/(\\d+)':   'categoryId',
+            '/tab/(\\d+)':      'tabId',
+            '/category/(\\d+)': 'categoryId',
             '/contact/([^/]+)': 'contactId'
         };
         s5b.location.contactId = '';
@@ -48,11 +48,13 @@ s5b.utility = {
 
 s5b.application = angular.module('application', []);
 
-s5b.application.directive('s5bContentReplacement', ['$http', function ($http) {
+s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$location', '$rootScope', function ($http, $compile, $location, $rootScope) {
     return function (scope, element, attributes) {
         $http({ method: 'GET', url: attributes['s5bContentReplacement']}).
             success(function (data, status, headers, config) {
                 element.replaceWith(data);
+                $compile(element)($rootScope);
+                s5b.utility.parsePath($location.path);
             }).
             error(function (data, status, headers, config) {
                 element.replaceWith(data);
@@ -71,6 +73,8 @@ s5b.controllers.main = ['$scope', '$location', function ($scope, $location) {
         return categoryId === s5b.location.categoryId ? 'selected' : '';
     };
     $scope.isContactSelected = function (contactId) {
+//        console.log($scope);
+//        console.log('Selection: target: ' + s5b.location.contactId + ', this: ' + contactId + ', selected? ' + (contactId === s5b.location.contactId ? 'YES' : '--'));
         return contactId === s5b.location.contactId ? 'selected' : '';
     };
     $scope.tabClick = function (tabId) {

@@ -142,6 +142,9 @@ div.contact {
   div.contact div.telecom > ul > li {
     font-weight: bold; }
 
+div.locationContainer div.contact {
+  width: 310px; }
+
 div.contactBase {
   float: left;
   padding-top: 1em;

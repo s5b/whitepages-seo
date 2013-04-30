@@ -81,7 +81,7 @@
                     <ul>
                         <li ng-repeat="contact in contacts()">
                             <div class="contact" ng-class="isSelected(contact)">
-                                <div class="primaryLabel"><img src="http://localhost:8080/watermelon-pages/resources/images/poi.png" ng-show="contact.address.geolocation" /> {{contact.primaryLabel}}</div>
+                                <div class="primaryLabel"><img src='<c:url value="/resources/images/poi.png"/>' ng-show="contact.address.geolocation" /> {{contact.primaryLabel}}</div>
                                 <div class="address">
                                     <p>{{contact.address.number}} {{contact.address.street}}</p>
                                     <p>{{contact.address.suburb}} {{contact.address.state}} {{contact.address.postcode}}</p>

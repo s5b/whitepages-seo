@@ -34,6 +34,9 @@ public class BusinessListingController
 	public String defaultView(Model model,
                               @PathVariable String contentName, @PathVariable String contentId) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
+        if (dde == null) {
+            return renderNotFoundMessage(model, contentName, contentId);
+        }
 
         TabLocation tabLocation = getDefaultTabCategory(dde);
         model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
@@ -46,11 +49,14 @@ public class BusinessListingController
         return render(dde, model);
 	}
 
-	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}", method=RequestMethod.GET)
+    @RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}", method=RequestMethod.GET)
 	public String locationView(Model model,
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String suburb, @PathVariable String state) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
+        if (dde == null) {
+            return renderNotFoundMessage(model, contentName, contentId);
+        }
 
         TabLocation defaultTabCategory = getDefaultTabCategory(dde);
         TabLocation tabLocation = resolveFindUsTabLocation(dde);
@@ -164,6 +170,15 @@ public class BusinessListingController
     private String render(DigitalDisplayEntry dde, Model model) {
         model.addAttribute("dde", dde);
         return "views/businessListing";
+    }
+
+    private String renderNotFoundMessage(Model model, String contentName, String contentId)
+    {
+        model.addAttribute("baseUrlPrefix", BASE_URL_PREFIX);
+        model.addAttribute("contentName", contentName);
+        model.addAttribute("contentId", contentId);
+        model.addAttribute("ddes", ALL_DIGITAL_DISPLAY_ENTRIES.allContentIdentifiers());
+        return "views/notFound";
     }
 
 }
