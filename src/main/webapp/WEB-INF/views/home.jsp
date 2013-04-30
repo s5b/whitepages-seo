@@ -42,7 +42,7 @@
 <body ng-controller="s5b.controllers.main">
 
     <header>
-        <h1>WatermelonPages - for all things pink-ish.</h1>
+        <h1>WatermelonPages - for all things flat & blue-ish.</h1>
     </header>
     <article>
         <nav class="main">
