@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
  */
 public class BusinessListingControllerTest
 {
+    private static final String CONTENT_ID_COLES = "123";
     private static final String CONTENT_ID_JETSTAR = "456";
 
     Model model = mock(Model.class);
@@ -60,6 +61,27 @@ public class BusinessListingControllerTest
         assertThat(location.getContentId(), equalTo("456"));
         assertThat(location.getContactId(), equalTo(""));
         assertThat(location.getTabId(), equalTo("none"));
+        assertThat(location.getCategoryId(), equalTo(""));
+        assertThat(location.getSuburb(), equalTo("suburb"));
+        assertThat(location.getState(), equalTo("state"));
+    }
+
+    @Test
+    public void allocationWithFindUsTabForColes() {
+        BusinessListingController blc = new BusinessListingController();
+        ArgumentCaptor<Location> locationCapture = ArgumentCaptor.forClass(Location.class);
+
+        blc.locationView(model, "contentName", CONTENT_ID_COLES, "suburb", "state");
+
+        verify(model).addAttribute(eq("location"), locationCapture.capture());
+
+        assertThat(blc, notNullValue());
+
+        Location location = locationCapture.getValue();
+        assertThat(location.getContentName(), equalTo("contentName"));
+        assertThat(location.getContentId(), equalTo("123"));
+        assertThat(location.getContactId(), equalTo(""));
+        assertThat(location.getTabId(), equalTo("102"));
         assertThat(location.getCategoryId(), equalTo(""));
         assertThat(location.getSuburb(), equalTo("suburb"));
         assertThat(location.getState(), equalTo("state"));

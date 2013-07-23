@@ -39,11 +39,12 @@ public class BusinessListingController
         }
 
         TabLocation tabLocation = getDefaultTabCategory(dde);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE),
+        Region region = new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, false, 0);
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, region),
                 tabLocation,
                 tabLocation,
                 resolveFindUsTabLocation(dde).getTabId(),
-                new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, 0),
+                region,
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
@@ -60,21 +61,46 @@ public class BusinessListingController
 
         TabLocation defaultTabCategory = getDefaultTabCategory(dde);
         TabLocation tabLocation = resolveFindUsTabLocation(dde);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
+        Region region = new Region(suburb, state, false, 0);
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, region),
                 tabLocation,
                 defaultTabCategory,
                 tabLocation.getTabId(),
-                new Region(suburb, state, 17),
+                region,
                 LOCATION_NO_CONTACT_ID));
 
         return render(dde, model);
 	}
 
+    @RequestMapping(value="{contentName}-{contentId}/near/{suburb}-{state}", method=RequestMethod.GET)
+	public String nearLocationView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String suburb, @PathVariable String state) {
+        DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
+        if (dde == null) {
+            return renderNotFoundMessage(model, contentName, contentId);
+        }
+
+        TabLocation defaultTabCategory = getDefaultTabCategory(dde);
+        TabLocation tabLocation = resolveFindUsTabLocation(dde);
+        Region region = new Region(suburb, state, true, 17);
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, region),
+                tabLocation,
+                defaultTabCategory,
+                tabLocation.getTabId(),
+                region,
+                LOCATION_NO_CONTACT_ID));
+
+        return render(dde, model);
+	}
+
+    /* *** AJAX fragment end-points */
+
 	@RequestMapping(value="{contentName}-{contentId}/fragment/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
 	public String fragmentTabCategoryView(Model model,
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String tabId, @PathVariable String categoryId) {
-        return fragmentCategory(model, contentName, contentId, LOCATION_NO_SUBURB, LOCATION_NO_STATE, tabId, categoryId);
+        return fragmentCategory(model, contentName, contentId, new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, false, 0), tabId, categoryId);
 	}
 
 	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}/fragment/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
@@ -82,7 +108,15 @@ public class BusinessListingController
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String suburb, @PathVariable String state,
                                @PathVariable String tabId, @PathVariable String categoryId) {
-        return fragmentCategory(model, contentName, contentId, suburb, state, tabId, categoryId);
+        return fragmentCategory(model, contentName, contentId, new Region(suburb, state, false, 0), tabId, categoryId);
+	}
+
+	@RequestMapping(value="{contentName}-{contentId}/near/{suburb}-{state}/fragment/tab/{tabId}/category/{categoryId}", method=RequestMethod.GET)
+	public String fragmentNearRegionTabCategoryView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String suburb, @PathVariable String state,
+                               @PathVariable String tabId, @PathVariable String categoryId) {
+        return fragmentCategory(model, contentName, contentId, new Region(suburb, state, true, 0), tabId, categoryId);
 	}
 
 	@RequestMapping(value="{contentName}-{contentId}/fragment/findUs", method=RequestMethod.GET)
@@ -98,6 +132,13 @@ public class BusinessListingController
         return fragmentFindUs(model, contentId);
 	}
 
+	@RequestMapping(value="{contentName}-{contentId}/near/{suburb}-{state}/fragment/findUs", method=RequestMethod.GET)
+	public String fragmentNearRegionFindUsView(Model model,
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String suburb, @PathVariable String state) {
+        return fragmentFindUs(model, contentId);
+	}
+
     /* *** private *** */
 
     private String fragmentFindUs(Model model, String contentId) {
@@ -105,16 +146,16 @@ public class BusinessListingController
         return "views/fragmentFindUs";
     }
 
-    private String fragmentCategory(Model model, String contentName, String contentId, String suburb, String state, String tabId, String categoryId) {
+    private String fragmentCategory(Model model, String contentName, String contentId, Region region, String tabId, String categoryId) {
         DigitalDisplayEntry dde = ALL_DIGITAL_DISPLAY_ENTRIES.byContentId(contentId);
 
         TabLocation defaultTabCategory = getDefaultTabCategory(dde);
         TabLocation tabLocation = resolveFindUsTabLocation(dde);
-        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, suburb, state),
+        model.addAttribute("location", new Location(new PrimaryId(BASE_URL_PREFIX, contentName, contentId, region),
                 tabLocation,
                 defaultTabCategory,
                 resolveFindUsTabLocation(dde).getTabId(),
-                new Region(suburb, state, 11),
+                region,
                 LOCATION_NO_CONTACT_ID));
         model.addAttribute("category", resolveCategory(dde, tabId, categoryId));
         return "views/fragmentCategory";

@@ -33,23 +33,23 @@ public class EntryJetstar extends Entry
         Map<String, Contact> contacts = Maps.newHashMap();
 
         contacts.put("1001", new Contact("1001", "Reservations",
-                null, Lists.<Telecom>newArrayList(new Telecom("10001", TelecomType.PHONE, "1800 FLY NOW"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10001", TelecomType.PHONE, "1800 FLY NOW")), LINKS_NONE));
         contacts.put("1002", new Contact("1002", "Customer Service",
-                null, Lists.<Telecom>newArrayList(new Telecom("10002", TelecomType.PHONE, "1300 SERVICE"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10002", TelecomType.PHONE, "1300 SERVICE")), LINKS_NONE));
         contacts.put("1003", new Contact("1003", "Public Relations",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1004", new Contact("1003", "Melbourne Airport",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1005", new Contact("1003", "Sydney International",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1006", new Contact("1003", "Perth Domestic",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1007", new Contact("1003", "Canberra Regional",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1008", new Contact("1003", "Brisbane International",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
         contacts.put("1009", new Contact("1003", "Darwin Airfield",
-                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME"))));
+                null, Lists.<Telecom>newArrayList(new Telecom("10003", TelecomType.PHONE, "1800 TELLME")), LINKS_NONE));
 
         return contacts;
     }

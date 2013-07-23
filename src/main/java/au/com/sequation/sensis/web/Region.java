@@ -13,12 +13,14 @@ public class Region
 {
     private final String suburb;
     private final String state;
+    private final boolean near;
     private final int count;
 
-    public Region(String suburb, String state, int count)
+    public Region(String suburb, String state, boolean near, int count)
     {
-        this.suburb = suburb;
-        this.state = state;
+        this.suburb = suburb != null ? suburb.trim() : "";
+        this.state = state != null ? state.trim() : "";
+        this.near = near;
         this.count = count;
     }
 
@@ -37,10 +39,23 @@ public class Region
         return count;
     }
 
+    public boolean isNear()
+    {
+        return near;
+    }
+
+    public boolean isRegioned() {
+        return suburb.length() > 0 && state.length() > 0;
+    }
+
     @Override
     public String toString()
     {
-        return display(suburb) + ", " + state.toUpperCase();
+        return (isNear() ? "near " : "in ") + display(suburb) + ", " + state.toUpperCase();
+    }
+
+    public String getUrlParameter() {
+        return isRegioned() ? (near ? "/near" : "") + "/" + suburb + "-" + state : "";
     }
 
     private String display(String source) {

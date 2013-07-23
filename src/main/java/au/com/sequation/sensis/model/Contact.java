@@ -15,12 +15,14 @@ public class Contact
     private final String label;
     private final Address address;
     private final List<Telecom> telecoms;
+    private final List<Link> links;
 
-    public Contact(String id, String label, Address address, List<Telecom> telecoms)
+    public Contact(String id, String label, Address address, List<Telecom> telecoms, List<Link> links)
     {
         this.id = id;
         this.label = label;
         this.address = address;
+        this.links = ImmutableList.copyOf(links);
         this.telecoms = ImmutableList.copyOf(telecoms);
     }
 
@@ -42,5 +44,10 @@ public class Contact
     public List<Telecom> getTelecoms()
     {
         return telecoms;
+    }
+
+    public List<Link> getLinks()
+    {
+        return links;
     }
 }

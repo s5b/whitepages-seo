@@ -10,12 +10,19 @@
         <s5b:localityHeading prefix="business-listing" currentLocality="${currentLocality}" thisLocality="${thisLocality}" thisSuburb="${contact.address.suburb}" thisState="${contact.address.state}" />
         <c:set var="currentLocality" value="${thisLocality}" scope="request"/>
         <li>
-            <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')">
+            <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')" data-ng-click="selectContact('${contact.id}')">
                 <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /> </c:if>${contact.label}</div>
                 <div class="address">
                     <c:set var="address" value="${contact.address}" />
                     <p>${address.number} ${address.street}</p>
                     <p>${address.suburb} ${address.state} ${address.postcode}</p>
+                </div>
+                <div class="link">
+                    <ul>
+                        <c:forEach var="link" items="${contact.links}">
+                            <li><a href='<c:out value="${link.url}"/>' target="_blank">${link.label}</a></li>
+                        </c:forEach>
+                    </ul>
                 </div>
                 <div class="telecom">
                     <ul>

@@ -11,16 +11,14 @@ public class PrimaryId
     private final String baseUrlPrefix;
     private final String contentName;
     private final String contentId;
-    private final String suburb;
-    private final String state;
+    private final Region region;
 
-    public PrimaryId(String baseUrlPrefix, String contentName, String contentId, String suburb, String state)
+    public PrimaryId(String baseUrlPrefix, String contentName, String contentId, Region region)
     {
         this.baseUrlPrefix = baseUrlPrefix;
         this.contentName = contentName;
         this.contentId = contentId;
-        this.suburb = suburb != null ? suburb.trim() : "";
-        this.state = state != null ? state.trim() : "";
+        this.region = region;
     }
 
     public String getContentName()
@@ -38,23 +36,13 @@ public class PrimaryId
         return baseUrlPrefix;
     }
 
-    public String getSuburb()
-    {
-        return suburb;
-    }
-
-    public String getState()
-    {
-        return state;
-    }
-
     public boolean isRegioned() {
-        return suburb.length() > 0 && state.length() > 0;
+        return region.isRegioned();
     }
 
     @Override
     public String toString()
     {
-        return baseUrlPrefix + contentName + "-" + contentId + (isRegioned() ? "/" + suburb + "-" + state : "");
+        return baseUrlPrefix + contentName + "-" + contentId + region.getUrlParameter();
     }
 }

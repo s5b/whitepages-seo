@@ -69,6 +69,11 @@ public class Location
         return region.getState();
     }
 
+    public boolean isNear()
+    {
+        return region.isNear();
+    }
+
     public String getContactId()
     {
         return contactId;

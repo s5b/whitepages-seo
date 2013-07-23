@@ -2,10 +2,12 @@ package au.com.sequation.sensis.model.data.entries;
 
 import au.com.sequation.sensis.model.Address;
 import au.com.sequation.sensis.model.Contact;
+import au.com.sequation.sensis.model.Link;
 import au.com.sequation.sensis.model.tab.Association;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public abstract class Entry
 {
+    static final List<Link> LINKS_NONE = Lists.newArrayList();
 
     List<Association> filterOnlyAddressedContacts(Collection<Contact> allContacts)
     {

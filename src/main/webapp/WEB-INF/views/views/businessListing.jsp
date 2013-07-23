@@ -56,6 +56,7 @@
         };
         s5b.location.suburb = '${location.suburb}';
         s5b.location.state  = '${location.state}';
+        s5b.location.near = '${location.near}';
     </script>
 
     <title>${dde.name} : Business Listing View</title>
