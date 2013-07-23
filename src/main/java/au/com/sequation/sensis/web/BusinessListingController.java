@@ -119,23 +119,29 @@ public class BusinessListingController
         return fragmentCategory(model, contentName, contentId, new Region(suburb, state, true, 0), tabId, categoryId);
 	}
 
-	@RequestMapping(value="{contentName}-{contentId}/fragment/findUs", method=RequestMethod.GET)
+	@RequestMapping(value="{contentName}-{contentId}/fragment/tab/{tabId}", method=RequestMethod.GET)
 	public String fragmentFindUsView(Model model,
-                               @PathVariable String contentName, @PathVariable String contentId) {
+                               @PathVariable String contentName, @PathVariable String contentId,
+                               @PathVariable String tabId) {
+        // FIXME: Should really check that the tabId is for the 'Find Us' tab.
         return fragmentFindUs(model, contentId);
 	}
 
-	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}/fragment/findUs", method=RequestMethod.GET)
+	@RequestMapping(value="{contentName}-{contentId}/{suburb}-{state}/fragment/tab/{tabId}", method=RequestMethod.GET)
 	public String fragmentRegionFindUsView(Model model,
                                @PathVariable String contentName, @PathVariable String contentId,
-                               @PathVariable String suburb, @PathVariable String state) {
+                               @PathVariable String suburb, @PathVariable String state,
+                               @PathVariable String tabId) {
+        // FIXME: Should really check that the tabId is for the 'Find Us' tab.
         return fragmentFindUs(model, contentId);
 	}
 
-	@RequestMapping(value="{contentName}-{contentId}/near/{suburb}-{state}/fragment/findUs", method=RequestMethod.GET)
+	@RequestMapping(value="{contentName}-{contentId}/near/{suburb}-{state}/fragment/tab/{tabId}", method=RequestMethod.GET)
 	public String fragmentNearRegionFindUsView(Model model,
                                @PathVariable String contentName, @PathVariable String contentId,
-                               @PathVariable String suburb, @PathVariable String state) {
+                               @PathVariable String suburb, @PathVariable String state,
+                               @PathVariable String tabId) {
+        // FIXME: Should really check that the tabId is for the 'Find Us' tab.
         return fragmentFindUs(model, contentId);
 	}
 

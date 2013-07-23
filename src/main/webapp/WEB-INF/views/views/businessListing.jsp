@@ -33,32 +33,6 @@
     <script src="<c:url value="/resources/coffee-js/lib/json3.min.js" />"></script>
     <![endif]-->
 
-    <script type="text/javascript">
-        var s5b = s5b || {};
-        s5b.location = s5b.location || {};
-        s5b.location.contentName       = '${location.contentName}';
-        s5b.location.contentId         = '${location.contentId}';
-        s5b.location.defaultTabId      = '${location.defaultTabId}';
-        s5b.location.defaultCategoryId = '${location.defaultCategoryId}';
-        s5b.location.findUsTabId       = '${location.findUsTabId}';
-        s5b.location.tabs              = {
-            <c:set var="tabSeparator" value="" />
-            <c:forEach var="tab" items="${dde.tabs}">
-                ${tabSeparator}"${tab.id}": [
-                        <c:set var="categorySeparator" value="" />
-                        <c:forEach var="category" items="${tab.categories}">
-                            ${categorySeparator}"${category.id}"
-                            <c:set var="categorySeparator" value="," />
-                        </c:forEach>
-                ]
-                <c:set var="tabSeparator" value="," />
-            </c:forEach>
-        };
-        s5b.location.suburb = '${location.suburb}';
-        s5b.location.state  = '${location.state}';
-        s5b.location.near = '${location.near}';
-    </script>
-
     <title>${dde.name} : Business Listing View</title>
     <meta name="description" content="A list of contacts explores the collision between JSP and AngularJS.">
 
@@ -89,7 +63,7 @@
                                     <s5b:category category="${category}" location="${location}" />
                                 </c:when>
                                 <c:otherwise>
-                                    <div data-s5b-content-replacement='<c:url value="${location.primaryId}/fragment/tab/${tab.id}/category/${category.id}" />'></div>
+                                    <div data-s5b-content-replacement='/tab/${tab.id}/category/${category.id}'></div>
                                 </c:otherwise>
                             </c:choose>
                         </section>
@@ -100,8 +74,7 @@
                 </c:when>
 
                 <c:when test='${tab.type == "findUs"}'>
-                    <div class="locationContainer" data-s5b-content-replacement='<c:url value="${location.primaryId}/fragment/findUs" />'>
-                    <%--<div class="locationContainer" >--%>
+                    <div class="locationContainer" data-s5b-content-replacement='/tab/${location.findUsTabId}'>
                         <s5b:findUs associations="${s5bdd:getFilteredAssociations(tab.associations, location.region)}" />
                     </div><div class="mapContainer"><img alt="map" src="<c:url value="/resources/images/mordor.png" />" /></div>
                 </c:when>
@@ -116,6 +89,36 @@
 <footer data-ng-cloak class="ng-cloak">
     &copy; 2013 CoffeePages Pty Ltd <a href="https://github.com/s5b/whitepages-seo">(source)</a>
 </footer>
+
+<script type="text/javascript">
+    var s5b = s5b || {};
+    s5b.location = s5b.location || {};
+    s5b.fragment = s5b.fragment || {};
+
+    s5b.location.contentName       = '${location.contentName}';
+    s5b.location.contentId         = '${location.contentId}';
+    s5b.location.defaultTabId      = '${location.defaultTabId}';
+    s5b.location.defaultCategoryId = '${location.defaultCategoryId}';
+    s5b.location.findUsTabId       = '${location.findUsTabId}';
+    s5b.location.tabs              = {
+        <c:set var="tabSeparator" value="" />
+        <c:forEach var="tab" items="${dde.tabs}">
+        ${tabSeparator}"${tab.id}": [
+            <c:set var="categorySeparator" value="" />
+            <c:forEach var="category" items="${tab.categories}">
+            ${categorySeparator}"${category.id}"
+            <c:set var="categorySeparator" value="," />
+            </c:forEach>
+        ]
+        <c:set var="tabSeparator" value="," />
+        </c:forEach>
+    };
+    s5b.location.suburb = '${location.suburb}';
+    s5b.location.state  = '${location.state}';
+    s5b.location.near = '${location.near}';
+
+    s5b.fragment.prefix = '<c:url value="${location.primaryId}/fragment"/>';
+</script>
 
 <script src="<c:url value="/resources/coffee-js/lib/lodash.min.js" />"></script>
 <script src="<c:url value="/resources/coffee-js/lib/angular.min.js" />"></script>

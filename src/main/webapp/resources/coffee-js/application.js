@@ -62,7 +62,7 @@ s5b.application = angular.module('application', []);
 s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$location', '$rootScope', '$q', function ($http, $compile, $location, $rootScope, $q) {
     return function (scope, elem, attributes) {
         console.log("--Requesting " + attributes['s5bContentReplacement']);
-        $http({ method: 'GET', url: attributes['s5bContentReplacement']}).
+        $http({ method: 'GET', url: s5b.fragment.prefix + attributes['s5bContentReplacement']}).
             success(function (data, status, headers, config) {
                 // I don't know whether the cloning is strictly necessary but it was the easiest way to get hold of the content to replace into the DOM.
                 $compile(angular.element(data.trim()))(scope, function (clonedContent, scope) { elem.replaceWith(clonedContent); });
