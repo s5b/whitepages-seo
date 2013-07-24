@@ -1,22 +1,25 @@
 var s5b = s5b || {};
 
 s5b.utility = {
+    makeFragmentUrl: function (tabId, categoryId, contactId) {
+        return '/tab/' + tabId +
+            (contactId !== undefined && contactId.length > 0 ? '/contact/' + contactId :
+            (categoryId !== undefined && categoryId.length > 0 ? '/category/' + categoryId : ''));
+    },
     scrollFindUs: function (id, entity, entities) {
         var element = document.getElementById(id);
         if (element !== null) {
             element.scrollIntoView(true);
-        } else {
-            if (!s5b.location.near || entity !== 'locality') {
-                window.alert("Oh-oh. The " + entity + " you're looking for doesn't exist. Showing all known " + entities + ".")
-            }
+        } else if (!s5b.location.near || entity !== 'locality') {
+            window.alert("Oh-oh. The " + entity + " you're looking for doesn't exist. Showing all known " + entities + ".")
         }
     },
-    parsePath: function (locationPath) {
-        console.log("parsing the location.");
+    parsePath: function (locationPath, http, compiler) {
+        var fragmentUrl = '';
         var pathComponents = {
             '/tab/(\\d+)':      ['tabId'],
             '/category/(\\d+)': ['categoryId'],
-            '/contact/([^/]+)': ['contactId']
+            '/tab/(\\d+)/contact/([^/]+)': ['tabId', 'contactId']
         };
         s5b.location.contactId = '';
         s5b.location.tabId = '';
@@ -35,7 +38,6 @@ s5b.utility = {
             // Show the FindUs tab, and scroll to the specific contact.
             s5b.location.tabId = s5b.location.findUsTabId;
             // Use setTimeout with a zero interval to force delayed execution until after all other processing.
-            // FIXME: Need to change this into a promise to scroll to the selected contact once the Find Us tab has been resolved. (Same below for the other scroll)
             setTimeout(function () { s5b.utility.scrollFindUs('contact_' + s5b.location.contactId, 'contact', 'contacts'); }, 0);
         } else if (s5b.location.tabId === '' && s5b.location.categoryId === '' && s5b.location.suburb && s5b.location.state && s5b.location.findUsTabId != 'none') {
             // Have a suburb and state but no tab or category, then show the Find Us tab for the locality.
@@ -54,30 +56,37 @@ s5b.utility = {
             s5b.location.tabId = s5b.location.defaultTabId;
             s5b.location.categoryId = s5b.location.defaultCategoryId;
         }
-    }
+        fragmentUrl = s5b.utility.makeFragmentUrl(s5b.location.tabId, s5b.location.categoryId, s5b.location.contactId);
+        if (s5b.utility.fragments[fragmentUrl] !== undefined && !s5b.utility.fragments[fragmentUrl].loaded) {
+            var elem = s5b.utility.fragments[fragmentUrl].element;
+            var fragmentScope = s5b.utility.fragments[fragmentUrl].scope;
+            http({ method: 'GET', url: s5b.fragment.prefix + fragmentUrl}).
+                success(function (data, status, headers, config) {
+                    // I don't know whether the cloning is strictly necessary but it was the easiest way to get hold of the content to replace into the DOM.
+                    compiler(angular.element(data.trim()))(fragmentScope, function (clonedContent, fragmentScope) { elem.replaceWith(clonedContent); });
+                    s5b.utility.fragments[fragmentUrl].loaded = true;
+                    s5b.utility.parsePath(locationPath, http, compiler);
+                }).
+                error(function (data, status, headers, config) {
+                    elem.replaceWith(data);
+                });
+        }
+    },
+    fragments: {}
 };
 
 s5b.application = angular.module('application', []);
 
 s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$location', '$rootScope', '$q', function ($http, $compile, $location, $rootScope, $q) {
     return function (scope, elem, attributes) {
-        console.log("--Requesting " + attributes['s5bContentReplacement']);
-        $http({ method: 'GET', url: s5b.fragment.prefix + attributes['s5bContentReplacement']}).
-            success(function (data, status, headers, config) {
-                // I don't know whether the cloning is strictly necessary but it was the easiest way to get hold of the content to replace into the DOM.
-                $compile(angular.element(data.trim()))(scope, function (clonedContent, scope) { elem.replaceWith(clonedContent); });
-                s5b.utility.parsePath($location.path);
-            }).
-            error(function (data, status, headers, config) {
-                elem.replaceWith(data);
-            });
+        s5b.utility.fragments[attributes['s5bContentReplacement']] = { loaded: false, element: elem, scope: scope };
     }
 }]);
 
 s5b.controllers = s5b.controllers || {};
 
-s5b.controllers.main = ['$scope', '$location', function ($scope, $location) {
-    $scope.$watch(function () { return $location.path(); }, function () { s5b.utility.parsePath($location.path()); });
+s5b.controllers.main = ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
+    $scope.$watch(function () { return $location.path(); }, function () { s5b.utility.parsePath($location.path(), $http, $compile); });
     $scope.isTabSelected = function (tabId) {
         return tabId === s5b.location.tabId ? 'selected' : '';
     };
@@ -85,16 +94,12 @@ s5b.controllers.main = ['$scope', '$location', function ($scope, $location) {
         return categoryId === s5b.location.categoryId ? 'selected' : '';
     };
     $scope.isContactSelected = function (contactId) {
-//        console.log($scope);
-//        console.log('Selection: target: ' + s5b.location.contactId + ', this: ' + contactId + ', selected? ' + (contactId === s5b.location.contactId ? 'YES' : '--'));
         return contactId === s5b.location.contactId ? 'selected' : '';
     };
     $scope.tabClick = function (tabId) {
         s5b.location.tabId = tabId;
     };
     $scope.selectContact = function (contactId) {
-//        console.log(contactId);
-//        console.log($location);
-        $location.path('/contact/' + contactId);
+        $location.path('/tab/' + s5b.location.findUsTabId + '/contact/' + contactId);
     };
 }];
