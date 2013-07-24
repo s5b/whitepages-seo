@@ -20,7 +20,7 @@
                         <p>${address.suburb} ${address.state} ${address.postcode}</p>
                     </div>
                     <c:if test="${contact.address.mappable}">
-                        <a class="viewMap" href='<c:url value="${location.primaryId}#/contact/${contact.id}"/>'>View map</a>
+                        <a class="viewMap" href='<c:url value="${location.primaryId}#/tab/${location.findUsTabId}/contact/${contact.id}"/>'>View map</a>
                     </c:if>
                 </div>
                 <div class="contactComms">
