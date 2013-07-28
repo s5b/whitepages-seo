@@ -6,6 +6,7 @@ import au.com.sequation.sensis.model.tab.Category;
 import au.com.sequation.sensis.model.tab.ContactTab;
 import au.com.sequation.sensis.model.tab.FindUsTab;
 import au.com.sequation.sensis.model.tab.Tab;
+import au.com.sequation.sensis.web.admin.AdminParametersFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -15,12 +16,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.inject.Inject;
+
 /* This controller uses hash URLs to determine what should be shown. */
 
 @Controller
 @RequestMapping("/business-listing/*")
 public class BusinessListingController
 {
+    @Inject
+    private AdminParametersFactory adminParametersFactory;
+
     private static final AllDigitalDisplays ALL_DIGITAL_DISPLAY_ENTRIES = AllDigitalDisplays.allDigitalDisplays();
 
     private static final String BASE_URL_PREFIX = "/business-listing/";
@@ -100,6 +106,7 @@ public class BusinessListingController
 	public String fragmentTabCategoryView(Model model,
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String tabId, @PathVariable String categoryId) {
+        pause();
         return fragmentCategory(model, contentName, contentId, new Region(LOCATION_NO_SUBURB, LOCATION_NO_STATE, false, 0), tabId, categoryId);
 	}
 
@@ -108,6 +115,7 @@ public class BusinessListingController
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String suburb, @PathVariable String state,
                                @PathVariable String tabId, @PathVariable String categoryId) {
+        pause();
         return fragmentCategory(model, contentName, contentId, new Region(suburb, state, false, 0), tabId, categoryId);
 	}
 
@@ -116,6 +124,7 @@ public class BusinessListingController
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String suburb, @PathVariable String state,
                                @PathVariable String tabId, @PathVariable String categoryId) {
+        pause();
         return fragmentCategory(model, contentName, contentId, new Region(suburb, state, true, 0), tabId, categoryId);
 	}
 
@@ -124,6 +133,7 @@ public class BusinessListingController
                                @PathVariable String contentName, @PathVariable String contentId,
                                @PathVariable String tabId) {
         // FIXME: Should really check that the tabId is for the 'Find Us' tab.
+        pause();
         return fragmentFindUs(model, contentId);
 	}
 
@@ -133,6 +143,7 @@ public class BusinessListingController
                                @PathVariable String suburb, @PathVariable String state,
                                @PathVariable String tabId) {
         // FIXME: Should really check that the tabId is for the 'Find Us' tab.
+        pause();
         return fragmentFindUs(model, contentId);
 	}
 
@@ -142,6 +153,7 @@ public class BusinessListingController
                                @PathVariable String suburb, @PathVariable String state,
                                @PathVariable String tabId) {
         // FIXME: Should really check that the tabId is for the 'Find Us' tab.
+        pause();
         return fragmentFindUs(model, contentId);
 	}
 
@@ -226,6 +238,16 @@ public class BusinessListingController
         model.addAttribute("contentId", contentId);
         model.addAttribute("ddes", ALL_DIGITAL_DISPLAY_ENTRIES.allContentIdentifiers());
         return "views/notFound";
+    }
+
+    private void pause() {
+        try
+        {
+            Thread.sleep((long) adminParametersFactory.getAdminFormBean().getMillisecondFragmentDelay());
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 }

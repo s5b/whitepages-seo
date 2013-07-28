@@ -22,6 +22,9 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-core', version: '3.2.0.RELEASE'
     compile group: 'org.springframework', name: 'spring-webmvc', version: '3.2.0.RELEASE'
 
+    compile group: 'javax.validation', name: 'validation-api', version: '1.0.0.GA'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.1.0.Final'
+
     compile group: 'log4j', name: 'log4j', version:'1.2.16'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.6'
 
