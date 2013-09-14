@@ -83,9 +83,10 @@ s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$locat
     }
 }]);
 
-s5b.controllers = s5b.controllers || {};
+//s5b.controllers = s5b.controllers || {};
 
-s5b.controllers.main = ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
+//s5b.controllers.main = ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
+s5b.application.controller('main', ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
     $scope.$watch(function () { return $location.path(); }, function () { s5b.utility.parsePath($location.path(), $http, $compile); });
     $scope.isTabSelected = function (tabId) {
         return tabId === s5b.location.tabId ? 'selected' : '';
@@ -102,4 +103,4 @@ s5b.controllers.main = ['$scope', '$location', '$http', '$compile', function ($s
     $scope.selectContact = function (contactId) {
         $location.path('/tab/' + s5b.location.findUsTabId + '/contact/' + contactId);
     };
-}];
+}]);

@@ -38,7 +38,7 @@
 
 </head>
 
-<body data-ng-controller="s5b.controllers.main">
+<body data-ng-controller="main">
 
 <header data-ng-cloak class="ng-cloak">
     <h1>${dde.name} : Business Listing</h1>
@@ -103,19 +103,19 @@
     s5b.location.tabs              = {
         <c:set var="tabSeparator" value="" />
         <c:forEach var="tab" items="${dde.tabs}">
-        ${tabSeparator}"${tab.id}": [
-            <c:set var="categorySeparator" value="" />
-            <c:forEach var="category" items="${tab.categories}">
-            ${categorySeparator}"${category.id}"
-            <c:set var="categorySeparator" value="," />
-            </c:forEach>
-        ]
-        <c:set var="tabSeparator" value="," />
+            ${tabSeparator}"${tab.id}": [
+                <c:set var="categorySeparator" value="" />
+                <c:forEach var="category" items="${tab.categories}">
+                    ${categorySeparator}"${category.id}"
+                    <c:set var="categorySeparator" value="," />
+                </c:forEach>
+            ]
+            <c:set var="tabSeparator" value="," />
         </c:forEach>
     };
     s5b.location.suburb = '${location.suburb}';
     s5b.location.state  = '${location.state}';
-    s5b.location.near = '${location.near}';
+    s5b.location.near   = '${location.near}';
 
     s5b.fragment.prefix = '<c:url value="${location.primaryId}/fragment"/>';
 </script>
