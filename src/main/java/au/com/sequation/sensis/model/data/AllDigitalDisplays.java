@@ -2,6 +2,7 @@ package au.com.sequation.sensis.model.data;
 
 import au.com.sequation.sensis.model.DigitalDisplayEntry;
 import au.com.sequation.sensis.model.data.entries.ContentIdentifier;
+import au.com.sequation.sensis.model.data.entries.EntryBigSchool;
 import au.com.sequation.sensis.model.data.entries.EntryColes;
 import au.com.sequation.sensis.model.data.entries.EntryJetstar;
 import com.google.common.base.Function;
@@ -21,6 +22,7 @@ public class AllDigitalDisplays
 {
     private static final List<DigitalDisplayEntry> INCLUDED_DIGITAL_DISPLAY_ENTRIES = Lists.newArrayList(
             EntryColes.build(),
+            EntryBigSchool.build(),
             EntryJetstar.build());
     private final Map<String, DigitalDisplayEntry> allDigitalDisplays = Maps.newHashMap();
 
