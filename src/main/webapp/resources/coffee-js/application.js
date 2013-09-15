@@ -75,7 +75,11 @@ s5b.utility = {
     fragments: {}
 };
 
+/* *** AngularJS initialisation. */
+
 s5b.application = angular.module('application', []);
+
+/* *** Directives. */
 
 s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$location', '$rootScope', '$q', function ($http, $compile, $location, $rootScope, $q) {
     return function (scope, elem, attributes) {
@@ -83,9 +87,8 @@ s5b.application.directive('s5bContentReplacement', ['$http', '$compile', '$locat
     }
 }]);
 
-//s5b.controllers = s5b.controllers || {};
+/* *** Controllers. */
 
-//s5b.controllers.main = ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
 s5b.application.controller('main', ['$scope', '$location', '$http', '$compile', function ($scope, $location, $http, $compile) {
     $scope.$watch(function () { return $location.path(); }, function () { s5b.utility.parsePath($location.path(), $http, $compile); });
     $scope.isTabSelected = function (tabId) {
