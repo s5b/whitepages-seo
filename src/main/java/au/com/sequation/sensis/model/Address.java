@@ -65,4 +65,8 @@ public class Address
     public boolean isMappable() {
         return geocode != null;
     }
+
+    public String getLongLat() {
+        return isMappable() ? geocode.getLongLat() : "";
+    }
 }

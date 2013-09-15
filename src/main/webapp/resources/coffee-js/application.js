@@ -148,8 +148,71 @@ s5b.application.service('viewState', ['$http', '$compile', function ($http, $com
             }
         }
     };
-
     return service;
+}]);
+
+s5b.application.service('locationMap', [function () {
+    var map = undefined;
+    var pois = {};
+
+    var layerStyle = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
+    layerStyle.fillOpacity = 0.2;
+    layerStyle.graphicOpacity = 1;
+
+    var poiGraphic = OpenLayers.Util.extend({}, layerStyle);
+    poiGraphic.strokeColor = "blue";
+    poiGraphic.fillColor = "blue";
+    poiGraphic.graphicName = "star";
+    poiGraphic.pointRadius = 10;
+    poiGraphic.strokeWidth = 3;
+    poiGraphic.rotation = 45;
+    poiGraphic.strokeLinecap = "butt";
+
+    var featureLayer = new OpenLayers.Layer.Vector("Simple Geometry", { style: layerStyle });
+
+    var projection = new OpenLayers.Projection('EPSG:4326');
+
+    var addPoiToMap = function (poi) {
+        var point = new OpenLayers.Geometry.Point(poi.long, poi.lat).transform(projection, map.getProjectionObject());
+        poi.feature = new OpenLayers.Feature.Vector(point, null, poiGraphic);
+        featureLayer.addFeatures([poi.feature]);
+    };
+
+    return {
+        createMap: function (id) {
+            map = new OpenLayers.Map({
+                div: id,
+                layers: [new OpenLayers.Layer.OSM()],
+                controls: [
+                    new OpenLayers.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    }),
+                    new OpenLayers.Control.Attribution(),
+                    new OpenLayers.Control.Zoom()
+                ]
+            });
+
+            // TODO: This is temporary centre and zoom, and should be set by the viewState.
+            map.setCenter(new OpenLayers.LonLat(115.8589, -31.9522).transform(projection, map.getProjectionObject()),12);
+            map.addLayer(featureLayer);
+            for (var poi in pois) {
+                if (pois.hasOwnProperty(poi)) {
+                    addPoiToMap(pois[poi]);
+                }
+            }
+        },
+        addPoi: function (id, element, longitude, latitude) {
+            if (pois[id] === undefined) {
+                var poi = { id: id, element: element, lat: latitude, long: longitude };
+                pois[id] = poi;
+                if (map !== undefined) {
+                    addPoiToMap(poi);
+                }
+            }
+        }
+    };
 }]);
 
 /* *** Directives. */
@@ -157,7 +220,27 @@ s5b.application.service('viewState', ['$http', '$compile', function ($http, $com
 s5b.application.directive('s5bContentReplacement', ['viewState', function (viewState) {
     return function (scope, elem, attributes) {
         viewState.setFragment(attributes['s5bContentReplacement'], { loaded: false, element: elem, scope: scope });
-    }
+    };
+}]);
+
+s5b.application.directive('s5bLocationMap', ['locationMap', function (locationMap) {
+    return {
+        link: function (scope, elem) {
+            locationMap.createMap(elem[0]);
+        }
+    };
+}]);
+
+s5b.application.directive('s5bMapReference', ['locationMap', function (locationMap) {
+    var latLongPattern = new RegExp('^\\s*([^\\s]+)\\s*,\\s*([^\\s]+)\\s*$');
+    return {
+        link: function (scope, elem, attributes) {
+            var match = latLongPattern.exec(attributes['s5bMapReference']);
+            if (match) {
+                locationMap.addPoi(attributes['id'], elem, parseFloat(match[1]), parseFloat(match[2]));
+            }
+        }
+    };
 }]);
 
 /* *** Controllers. */

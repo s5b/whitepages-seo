@@ -10,7 +10,7 @@
         <s5b:localityHeading prefix="business-listing" currentLocality="${currentLocality}" thisLocality="${thisLocality}" thisSuburb="${contact.address.suburb}" thisState="${contact.address.state}" />
         <c:set var="currentLocality" value="${thisLocality}" scope="request"/>
         <li>
-            <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')" data-ng-click="selectContact('${contact.id}')">
+            <div id="contact_${contact.id}" class="contact" data-ng-class="isContactSelected('${contact.id}')" data-ng-click="selectContact('${contact.id}')" data-s5b-map-reference="${contact.address.longLat}">
                 <div class="primaryLabel"><c:if test="${contact.address.mappable}"><img alt="poi" src="<c:url value="/resources/images/poi.png" />" /> </c:if>${contact.label}</div>
                 <div class="address">
                     <c:set var="address" value="${contact.address}" />

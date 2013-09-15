@@ -76,7 +76,7 @@
                 <c:when test='${tab.type == "findUs"}'>
                     <div class="locationContainer" data-s5b-content-replacement='/tab/${location.findUsTabId}'>
                         <s5b:findUs associations="${s5bdd:getFilteredAssociations(tab.associations, location.region)}" />
-                    </div><div class="mapContainer"><img alt="map" src="<c:url value="/resources/images/mordor.png" />" /></div>
+                    </div><div id="locationMap" class="mapContainer" data-s5b-location-map style="width: 558px; height: 458px;"></div>
                 </c:when>
 
                 <c:otherwise>HUH? Tab type "${tab.type}" is unknown.</c:otherwise>
@@ -92,6 +92,7 @@
 
 <script src="<c:url value="/resources/coffee-js/lib/lodash.min.js" />"></script>
 <script src="<c:url value="/resources/coffee-js/lib/angular.min.js" />"></script>
+<script src="<c:url value="/resources/coffee-js/lib/openLayers/lib/OpenLayers.js" />"></script>
 <script src="<c:url value="/resources/coffee-js/application.js" />"></script>
 
 <script type="text/javascript">

@@ -26,4 +26,9 @@ public class Geocode
     {
         return longitude;
     }
+
+    public String getLongLat()
+    {
+        return longitude + "," + latitude;
+    }
 }
