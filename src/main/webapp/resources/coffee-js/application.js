@@ -7,6 +7,12 @@ s5b.utility = {
 
 s5b.application = angular.module('application', []);
 
+/* *** Configuration. */
+
+s5b.application.config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.html5Mode(false);
+}]);
+
 /* *** Services. */
 
 s5b.application.service('viewState', ['$http', '$compile', function ($http, $compile) {
@@ -159,6 +165,13 @@ s5b.application.service('locationMap', [function () {
     layerStyle.fillOpacity = 0.2;
     layerStyle.graphicOpacity = 1;
 
+    var featureListeners = {
+        featureclick: function (event) {
+            console.log("In the feature event click listener. " + event.feature.id);
+            return false;
+        }
+    };
+
     var poiGraphic = OpenLayers.Util.extend({}, layerStyle);
     poiGraphic.strokeColor = "blue";
     poiGraphic.fillColor = "blue";
@@ -168,7 +181,7 @@ s5b.application.service('locationMap', [function () {
     poiGraphic.rotation = 45;
     poiGraphic.strokeLinecap = "butt";
 
-    var featureLayer = new OpenLayers.Layer.Vector("Simple Geometry", { style: layerStyle });
+    var featureLayer = new OpenLayers.Layer.Vector("Simple Geometry", { style: layerStyle, eventListeners: featureListeners });
 
     var projection = new OpenLayers.Projection('EPSG:4326');
 
@@ -182,7 +195,7 @@ s5b.application.service('locationMap', [function () {
         createMap: function (id) {
             map = new OpenLayers.Map({
                 div: id,
-                layers: [new OpenLayers.Layer.OSM()],
+                layers: [new OpenLayers.Layer.OSM(), featureLayer],
                 controls: [
                     new OpenLayers.Control.Navigation({
                         dragPanOptions: {
@@ -191,14 +204,24 @@ s5b.application.service('locationMap', [function () {
                     }),
                     new OpenLayers.Control.Attribution(),
                     new OpenLayers.Control.Zoom()
-                ]
+                ],
+                allOverlays: true,
+                eventListeners: {
+                    featureover: function (event) {
+                        console.log("Over...");
+                    },
+                    featureclick: function (event) {
+                        console.log("Map says: " + e.feature.id + " clicked on " + e.feature.layer.name);
+                    }
+                }
             });
 
             // TODO: This is temporary centre and zoom, and should be set by the viewState.
             map.setCenter(new OpenLayers.LonLat(115.8589, -31.9522).transform(projection, map.getProjectionObject()),12);
-            map.addLayer(featureLayer);
+//            map.addLayer(featureLayer);
             for (var poi in pois) {
                 if (pois.hasOwnProperty(poi)) {
+                    console.log("A Adding POI");
                     addPoiToMap(pois[poi]);
                 }
             }
@@ -208,6 +231,7 @@ s5b.application.service('locationMap', [function () {
                 var poi = { id: id, element: element, lat: latitude, long: longitude };
                 pois[id] = poi;
                 if (map !== undefined) {
+                    console.log("Adding POI");
                     addPoiToMap(poi);
                 }
             }

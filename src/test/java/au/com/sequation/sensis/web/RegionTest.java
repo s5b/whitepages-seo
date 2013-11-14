@@ -15,13 +15,13 @@ public class RegionTest
     @Test
     public void toStringConvertsSuburbToRemoveHyphensAndChangeToTileCaseWithStateInUppercase()
     {
-        Region region = new Region("south-fitz-kilda", "nsw", 13);
-        assertThat(region.toString(), equalTo("South Fitz Kilda, NSW"));
+        Region region = new Region("south-fitz-kilda", "nsw", true, 13);
+        assertThat(region.toString(), equalTo("near South Fitz Kilda, NSW"));
     }
     @Test
     public void toStringConvertsSuburbWithoutHyphensAndChangeToTileCaseWithStateInUppercase()
     {
-        Region region = new Region("hampton", "vic", 13);
-        assertThat(region.toString(), equalTo("Hampton, VIC"));
+        Region region = new Region("hampton", "vic", false, 13);
+        assertThat(region.toString(), equalTo("in Hampton, VIC"));
     }
 }

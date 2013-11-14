@@ -4,7 +4,7 @@
 <%@ attribute name="category" required="true" type="au.com.sequation.sensis.model.tab.Category" %>
 <%@ attribute name="location" required="true" type="au.com.sequation.sensis.web.Location"%>
 <c:if test="${location.primaryId.regioned}">
-    <a class="region" href='<c:url value="${location.primaryId}#" />'>View locations found <span>${location.region}</span> &gt;</a>
+    <a class="region" href='<c:url value="${location.primaryId}#/tab/${location.findUsTabId}" />'>View locations found <span>${location.region}</span> &gt;</a>
 </c:if>
 <ul>
     <c:forEach var="association" items="${category.associations}">
