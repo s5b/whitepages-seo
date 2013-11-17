@@ -9,7 +9,7 @@ package au.com.sequation.sensis.web.admin;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.springframework.mvc.extensions.ajax.AjaxUtils;
+import au.com.sequation.sensis.web.utils.AjaxUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

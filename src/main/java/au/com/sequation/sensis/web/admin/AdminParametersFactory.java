@@ -1,12 +1,10 @@
 package au.com.sequation.sensis.web.admin;
 
+import org.springframework.stereotype.Component;
+
 import javax.inject.Singleton;
 
-/**
- * User: sbegg
- * Date: 25/07/13
- * Time: 2:36 PM
- */
+@Component
 @Singleton
 public class AdminParametersFactory
 {
